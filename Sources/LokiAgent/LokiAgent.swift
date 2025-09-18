@@ -49,19 +49,21 @@ public class LokiAgent {
             return
         }
         messages.remove(logs)
-        let dto = LokiPushDto(streams: [
-            LokiStreamDto(app: app,
-                          values: logs.map{ $0.dto })
-        ])
-        var request = URLRequest(url: lokiURL)
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpBody = try JSONEncoder().encode(dto)
-        let (_, response) = try await URLSession.shared.data(for: request)
-        guard let httpReseponse = response as? HTTPURLResponse, httpReseponse.statusCode == 204 else {
-            print("Resonse: \(response.debugDescription)")
-            self.messages.append(logs)
-            throw LokiAgentError.uploadFailed
+        Task {
+            let dto = LokiPushDto(streams: [
+                LokiStreamDto(app: app,
+                              values: logs.map{ $0.dto })
+            ])
+            var request = URLRequest(url: lokiURL)
+            request.httpMethod = "POST"
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.httpBody = try JSONEncoder().encode(dto)
+            let (_, response) = try await URLSession.shared.data(for: request)
+            guard let httpReseponse = response as? HTTPURLResponse, httpReseponse.statusCode == 204 else {
+                print("Resonse: \(response.debugDescription)")
+                self.messages.append(logs)
+                throw LokiAgentError.uploadFailed
+            }
         }
     }
 }
