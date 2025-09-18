@@ -26,6 +26,25 @@ public struct LogEntry {
     }
 }
 
+extension LogEntry: Equatable {
+    public static func == (lhs: LogEntry, rhs: LogEntry) -> Bool {
+        guard lhs.date == rhs.date, lhs.message == rhs.message else {
+            return false
+        }
+        guard lhs.tags?.count == rhs.tags?.count else {
+            return false
+        }
+        guard let lhsTags = lhs.tags, let rhsTags = rhs.tags else {
+            return true
+        }
+        for (key, lhsValue) in lhsTags {
+            guard let rhsValue = rhsTags[key], "\(lhsValue)" == "\(rhsValue)" else {
+                return false
+            }
+        }
+        return true
+    }
+}
 extension LogEntry {
     var dto: LogEntryDto {
         LogEntryDto(time: date, message: message, tags: tags?.mapValues{ $0.description })
