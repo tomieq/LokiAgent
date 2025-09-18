@@ -13,7 +13,7 @@ public struct LogEntry {
     public let message: String
     public let tags: [String: CustomStringConvertible]?
     
-    public init(_ date: Date, _ message: String, level: LogLevel? = nil, tags: [String : CustomStringConvertible]? = nil) {
+    public init(_ date: Date, _ message: String, level: LokiLogLevel? = nil, tags: [String : CustomStringConvertible]? = nil) {
         self.date = date
         self.message = message
         if let level {
