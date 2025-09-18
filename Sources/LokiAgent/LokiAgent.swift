@@ -51,7 +51,6 @@ public class LokiAgent {
         guard logs.count > 0 else {
             return
         }
-        print(logs)
         messages.remove(logs)
         let dto = LokiPushDto(streams: [
             LokiStreamDto(app: app,
