@@ -1,5 +1,4 @@
 import Foundation
-import Combine
 
 public enum LokiAgentError: Error {
     case uploadFailed
@@ -19,13 +18,6 @@ public class LokiAgent {
     init (app: String, uploader: Uploader) {
         self.app = app
         self.uploader = uploader
-        Task {
-            let publisher = Timer.publish(every: 10, on: .main, in: .default)
-                .autoconnect()
-            for await _ in publisher.values {
-                try? await self.upload()
-            }
-        }
     }
     
     public convenience init(app: String, lokiURL: URL) {
