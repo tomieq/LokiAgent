@@ -20,7 +20,11 @@ let package = Package(
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
-            name: "LokiAgent"
+            name: "LokiAgent",
+            swiftSettings: [
+                .define("LINUX", .when(platforms: [.linux])),
+                .define("MACOS", .when(platforms: [.macOS]))
+            ]
         ),
         .testTarget(
             name: "LokiAgentTests",

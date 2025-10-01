@@ -5,6 +5,9 @@
 //  Created by: tomieq on 18/09/2025
 //
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 
 class LokiUploader: Uploader {
     let serverURL: URL
